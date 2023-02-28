@@ -1,0 +1,134 @@
+\documentclass[a4paper,12pt]{book}
+
+%\usepackage[T1]{newtxtext} % carattere times new roman
+\usepackage{step}
+
+%\usepackage{fontspec}
+%\setmainfont{Times New Roman} % carattere times new roman
+\usepackage[italian]{babel}
+\linespread{1.5}
+
+\setlength{\parindent}{0em} % indentazine paragrafo nulla
+\usepackage{ragged2e} % testo giustificato
+
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref} % link nel documento
+\usepackage{float} % [H] in immagini
+
+\usepackage{color}
+\usepackage{listings} % inserire codice
+
+\lstset{ %
+    tabsize = 3, %% set tab space width
+    showstringspaces = false, %% prevent space marking in strings, string is defined as the text that is generally printed directly to the console
+    numbers = left, %% display line numbers on the left
+    commentstyle = \color{green}, %% set comment color
+    keywordstyle = \color{blue}, %% set keyword color
+    stringstyle = \color{red}, %% set string color
+    rulecolor = \color{black}, %% set frame color to avoid being affected by text color
+    basicstyle = \small \ttfamily , %% set listing font and size
+    breaklines = true, %% enable line breaking
+    numberstyle = \tiny,
+}
+
+\usepackage{longtable} % tabelle multipagina
+\usepackage{dirtree} % creare struttura progetto
+
+\usepackage{fancyhdr} % numerazione pagine
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[LO]{\rightmark}
+\fancyhead[RE]{\leftmark}
+
+\usepackage[left=3cm, right=3cm, bottom=3cm, top=3cm]{geometry}
+
+\renewcommand\lstlistlistingname{Elenco del codice} % Nome personalizzato listings
+
+\usepackage{biblatex} % bibliografia
+\addbibresource{chapters/biblio.bib}
+
+\usepackage[acronym]{glossaries}
+\makeglossaries
+\loadglsentries{chapters/gloss}
+
+
+
+\begin{document}
+
+%%%%%%%%%%%%%%%% PRIMA PAGINA %%%%%%%%%%%%%%%%
+\begin{titlepage}
+\begin{center}
+\includegraphics[height=2.22cm]{images/unipd_800_logotipo_sigillo.pdf}  \hfill \includegraphics[height=2.22cm]{images/dei_sigillo_logotipe.pdf}  \\
+
+\vspace{2cm}
+\textsc{\LARGE Università degli Studi di Padova}\\
+\vspace{0.45cm}
+\textsc{\large Dipartimento di Ingegneria dell'Informazione}\\
+\vspace{0.4cm}
+\textsc{\large Corso di Laurea Triennale in}\\
+\textsc{\large Ingegneria Informatica}\\
+\vfill
+% Title
+{ \LARGE \bfseries Utilizzo del framework Spring e del broker di messaggi RabbitMQ in una applicazione web per il corporate social networking}\\
+\vfill
+\textit{\large Relatore:} \hfill \textit{\large Laureando:}\\
+\textsc{\large Prof. Fantozzi Carlo} \hfill \textsc{Luisetto Federico}\\
+\hfill \textsc{1187521}\\
+
+\vfill
+% fondo pagina
+{\large Anno Accademico 2021/2022}\\
+{\large Data di laurea 07/03/2022}
+\end{center}
+\end{titlepage}
+
+%%%%%%%%%%%%%%%% FINE PRIMA PAGINA %%%%%%%%%%%%%%%%
+
+\thispagestyle{empty} %pagina bianca dopo il titolo
+\cleardoublepage
+
+% numerazione romana per l'indice, il sommario e i ringraziamenti
+\pagenumbering{roman}
+\thispagestyle{empty}
+
+\clearpage{\pagestyle{plain}\cleardoublepage}
+\pdfbookmark{\contentsname}{abs}
+\input{chapters/summary}
+
+% indice
+\clearpage{\pagestyle{plain}\cleardoublepage}
+\pdfbookmark{\contentsname}{toc}
+\tableofcontents
+% lista figure
+\clearpage{\pagestyle{plain}\cleardoublepage}
+%\pdfbookmark{\listfigurename}{lof}
+\listoffigures
+% lista tabelle
+\clearpage{\pagestyle{plain}\cleardoublepage}
+%\pdfbookmark{\listtablename}{lot}
+\listoftables
+% lista codice
+\clearpage{\pagestyle{plain}\cleardoublepage}
+%\pdfbookmark{\listtablename}{lol}
+\lstlistoflistings
+% numerazione araba per i capitoli
+\clearpage{\pagestyle{plain}\cleardoublepage} 
+\pagenumbering{arabic}
+
+%%%%%%%%%%%%%%%% CORPO DOCUMENTO %%%%%%%%%%%%%%%%
+\input{chapters/intro}
+\input{chapters/theory}
+\input{chapters/project}
+\input{chapters/challenginator}
+\input{chapters/service}
+\input{chapters/logger}
+\input{chapters/conclusion}
+
+%%%%%%%%%%%%%%%% GLOSSARIO %%%%%%%%%%%%%%%%
+\printglossary[type=\acronymtype]
+\printglossary
+
+%%%%%%%%%%%%%%%% BIBLIOGRAFIA %%%%%%%%%%%%%%%%
+\printbibliography[title={Sitografia}]
+
+\end{document}

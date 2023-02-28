@@ -1,0 +1,363 @@
+\chapter{Challenginator}\label{challenginator}
+
+L'analisi che segue è stata svolta da persone terze quando il progetto è stato avviato \cite{canovese}.\\
+\textit{Challenginator} è una \textit{web application} che permette l'invio, la ricezione ed il tracciamento di sfide tra i membri di un team. Mediante la \textit{user interface} ogni utente può effettuare la registrazione e, dopo il processo di autenticazione tramite login, l'accesso alla propria area personale.
+Da quest'ultima l'utente ha accesso a:
+\begin{itemize}
+    \item Home: pagina riepilogativa
+    \item Dashboard: pagina con accesso rapido alle sfide passate, alla procedura di lancio di una nuova sfida ed elencazione di sfide in cui si è stati sfidati, si sfida o si fa da valutatore
+    \item Preferenze di notifica: pagina dove l'utente decide quali tipologie di notifica ricevere
+    \item Storico: pagina contenente lo storico delle sfide
+    \item Nuova Challenge: pagina dove è possibile lanciare una nuova sfida
+    \item Logout
+\end{itemize}
+Ogni utente può sfidare un collega attraverso l'apposito form di inserimento di una nuova sfida ed in modo automatico verrà assegnato un valutatore. Quest'ultimo è il soggetto, gerarchicamente a livello superiore, che decreterà la riuscita od il fallimento della sfida una volta completata da parte dello sfidato.
+
+%%%%%%%%%%  ANALISI REQUISITI   %%%%%%%%%%
+\section{Analisi dei requisiti}
+
+Lo scopo del prodotto è stato riportato nella sezione precedente.
+Durante l'intero flusso dell'applicazione gli attori del sistema sono:
+\begin{itemize}
+    \item \textbf{Utente non autenticato:} identifica un utente che non ha ancora effettuato l'accesso al rispettivo account
+    \item \textbf{Utente autenticato:} identifica un utente che ha effettuato correttamente il login e può essere identificato a sua volta come:
+    \begin{itemize}
+        \item \textbf{Sfidante:} utente che ha inserito una sfida contro un utente terzo
+        \item \textbf{Sfidato:} utente che ha ricevuto una sfida da un utente terzo
+        \item \textbf{Valutatore:} utente che deve decretare la riuscita o meno di una sfida
+    \end{itemize}
+\end{itemize}
+
+%%%%%%%%%%  CASI D'USO  %%%%%%%%%%
+\subsection{Casi d'uso}
+
+I casi d'uso individuati sono elencati di seguito.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3cm}p{11.15cm}|}
+        \hline
+        %\multicolumn{2}{|c|}{\textbf{UC-1: Login utente}} \\\hline
+        \textbf{Attore primario} & utente non autenticato \\
+        \textbf{Descrizione} & autenticazione utente \\
+        \textbf{Precondizioni} & l’utente non si è ancora autenticato nell’applicazione \\
+        \textbf{Input} & l’utente inserisce ed invia i dati per il login \\
+        \textbf{Postcondizioni} & il cliente è autenticato \\\hline
+    \end{tabular}
+    \caption{UC-1: Login utente}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3cm}p{11.15cm}|}
+        \hline
+        %\multicolumn{2}{|c|}{\textbf{UC-1: Login utente}} \\\hline
+        \textbf{Attore primario} & utente non autenticato \\
+        \textbf{Descrizione} & registrazione nuovo utente \\
+        \textbf{Precondizioni} & l’utente non si è ancora autenticato nell’applicazione \\
+        \textbf{Input} & l’utente inserisce ed invia i dati per la creazione del proprio account \\
+        \textbf{Postcondizioni} & il cliente è autenticato \\\hline
+    \end{tabular}
+    \caption{UC-2: Registrazione utente}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3cm}p{11.15cm}|}
+        \hline
+        %\multicolumn{2}{|c|}{\textbf{UC-1: Login utente}} \\\hline
+        \textbf{Attore primario} & utente autenticato (sfidante, sfidato, valutatore) \\
+        \textbf{Descrizione} & l’utente vuole visualizzare le sfide in cui è coinvolto come sfidato, sfidante o valutatore \\
+        \textbf{Precondizioni} & l’utente ha effettuato il login \\
+        \textbf{Input} & l’utente clicca sulla voce di menù dashboard, se non la sta già visualizzando a seguito del login \\
+        \textbf{Postcondizioni} & l’utente visualizza la \textit{dashboard} contenente tutte le sfide in cui è coinvolto a vario titolo \\\hline
+    \end{tabular}
+    \caption{UC-3: Visualizzazione lista sfide (\textit{dashboard})}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3cm}p{11.15cm}|}
+        \hline
+        %\multicolumn{2}{|c|}{\textbf{UC-1: Login utente}} \\\hline
+        \textbf{Attore primario} & utente autenticato - sfidante \\
+        \textbf{Descrizione} & l’utente che ha lanciato la sfida vuole cancellarla \\
+        \textbf{Precondizioni} & l’utente sta visualizzando la dashboard riepilogativa ed è l’utente sfidante \\
+        \textbf{Input} & l’utente clicca sul pulsante per cancellare la sfida \\
+        \textbf{Postcondizioni} & l’utente ha cancellato la sfida \\\hline
+    \end{tabular}
+    \caption{UC-3.1: Cancellazione challenge}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3cm}p{11.15cm}|}
+        \hline
+        %\multicolumn{2}{|c|}{\textbf{UC-1: Login utente}} \\\hline
+        \textbf{Attore primario} & utente autenticato - sfidato \\
+        \textbf{Descrizione} & l’utente vuole accettare una sfida che gli viene proposta \\
+        \textbf{Precondizioni} & l’utente sta visualizzando la \textit{dashboard} riepilogativa, e una sfida in cui è identificato come sfidato è in attesa \\
+        \textbf{Input} & l’utente clicca sul pulsante per accettare la sfida \\
+        \textbf{Postcondizioni} & l’utente ha accettato la sfida \\\hline
+    \end{tabular}
+    \caption{UC-3.2: Accettazione challenge}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3cm}p{11.15cm}|}
+        \hline
+        %\multicolumn{2}{|c|}{\textbf{UC-1: Login utente}} \\\hline
+        \textbf{Attore primario} & utente autenticato - sfidato \\
+        \textbf{Descrizione} & l’utente vuole rifiutare una sfida che gli viene proposta \\
+        \textbf{Precondizioni} & l’utente sta visualizzando la \textit{dashboard} riepilogativa, e una sfida in cui è identificato come sfidato è in attesa \\
+        \textbf{Input} & l’utente clicca sul pulsante per rifiutare la sfida \\
+        \textbf{Postcondizioni} & l’utente ha rifiutato la sfida \\\hline
+    \end{tabular}
+    \caption{UC-3.3: Rifiuto challenge}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3cm}p{11.15cm}|}
+        \hline
+        %\multicolumn{2}{|c|}{\textbf{UC-1: Login utente}} \\\hline
+        \textbf{Attore primario} & utente autenticato - sfidato \\
+        \textbf{Descrizione} & l’utente vuole dichiarare la sfida in cui è sfidato come completata \\
+        \textbf{Precondizioni} & l’utente sta visualizzando la \textit{dashboard} riepilogativa, e vuole dichirare la sfida (in cui risulta sfidato) come completata \\
+        \textbf{Input} & l’utente clicca sul pulsante per completare la sfida \\
+        \textbf{Postcondizioni} & l’utente ha modificato lo stato della sfida \\\hline
+    \end{tabular}
+    \caption{UC-3.4: Dichiarare la sfida come completata}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3cm}p{11.15cm}|}
+        \hline
+        %\multicolumn{2}{|c|}{\textbf{UC-1: Login utente}} \\\hline
+        \textbf{Attore primario} & utente autenticato - sfidato \\
+        \textbf{Descrizione} & l’utente vuole arrendersi in una sfida \\
+        \textbf{Precondizioni} & l’utente sta visualizzando la \textit{dashboard} riepilogativa, e vuole arrendersi in una sfida \\
+        \textbf{Input} & l’utente clicca sul pulsante per arrendersi \\
+        \textbf{Postcondizioni} & l’utente ha modificato lo stato della sfida \\\hline
+    \end{tabular}
+    \caption{UC-3.5: Arrendersi in una sfida}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3cm}p{11.15cm}|}
+        \hline
+        %\multicolumn{2}{|c|}{\textbf{UC-1: Login utente}} \\\hline
+        \textbf{Attore primario} & utente autenticato \\
+        \textbf{Descrizione} & l’utente vuole visualizzare il dettaglio di una sfida \\
+        \textbf{Precondizioni} & l’utente sta visualizzando la \textit{dashboard} riepilogativa \\
+        \textbf{Input} & l’utente clicca sul pulsante per visualizzare i dettagli della sfida, quali inizio e fine, tempo rimanente, la descrizione completa... \\
+        \textbf{Postcondizioni} & l’utente visualizza la pagina di dettaglio della sfida \\\hline
+    \end{tabular}
+    \caption{UC-4: Visualizzazione dettaglio sfida}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3cm}p{11.15cm}|}
+        \hline
+        %\multicolumn{2}{|c|}{\textbf{UC-1: Login utente}} \\\hline
+        \textbf{Attore primario} & utente autenticato \\
+        \textbf{Descrizione} & l’utente vuole inserire una nuova sfida \\
+        \textbf{Precondizioni} & l’utente clicca il pulsante di creazione nuova sfida \\
+        \textbf{Input} & l’utente inserisce i dati richiesti per lanciare una sfida \\
+        \textbf{Postcondizioni} & l’utente ha lanciato una sfida \\\hline
+    \end{tabular}
+    \caption{UC-5: Inserimento nuova sfida}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3cm}p{11.15cm}|}
+        \hline
+        %\multicolumn{2}{|c|}{\textbf{UC-1: Login utente}} \\\hline
+        \textbf{Attore primario} & utente autenticato \\
+        \textbf{Descrizione} & l’utente vuole visualizzare il dettaglio di una sfida \\
+        \textbf{Precondizioni} & l’utente sta visualizzando la \textit{dashboard} riepilogativa \\
+        \textbf{Input} & l’utente clicca il pulsante per visualizzare il dettaglio della sfida \\
+        \textbf{Postcondizioni} & l’utente visualizza la pagina di dettaglio della sfida \\\hline
+    \end{tabular}
+    \caption{UC-6: Visualizzazione storico sfide}
+\end{table}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3cm}p{11.15cm}|}
+        \hline
+        %\multicolumn{2}{|c|}{\textbf{UC-1: Login utente}} \\\hline
+        \textbf{Attore primario} & utente autenticato \\
+        \textbf{Descrizione} & l’utente vuole decidere quali notifiche ricevere \\
+        \textbf{Precondizioni} & l’utente seleziona le \textit{checkbox} \\
+        \textbf{Input} & l’utente clicca il pulsante di selezione preferenze di notifica, come in figura \ref{fig:prefnot} \\
+        \textbf{Postcondizioni} & l’utente salva le sue preferenze di notifica \\\hline
+    \end{tabular}
+    \caption{UC-7: Scelta preferenze di notifica}
+\end{table}
+
+%%%%%%%%%% TRACCIAMENTO REQUISITI   %%%%%%%%%%
+\subsection{Tracciamento dei requisiti}
+Per elencare i requisiti individuati correlati ai casi d'uso utilizzo la seguente codifica:
+\begin{center}
+    \texttt{R[Importanza][Tipologia]-[Codice]}
+\end{center}
+\begin{itemize}
+    \item \textbf{Importanza:} indica l'importanza di tale requisito attraverso i valori
+    \begin{itemize}
+        \item \textbf{1} requisito obbligatorio
+        \item \textbf{2} requisito desiderabile
+        \item \textbf{3} requisito opzionale
+    \end{itemize}
+    \item \textbf{Tipologia}
+    \begin{itemize}
+        \item \textbf{V} requisito di vincolo
+        \item \textbf{F} requisito funzionale
+        \item \textbf{Q} requisito di qualità
+    \end{itemize}
+    \item \textbf{Codice:} identificatore univoco in forma gerarchica padre/figlio
+\end{itemize}
+\begin{center}
+    \textbf{[CodiceBase](.[CodiceSottoCaso])*}
+\end{center}
+Il CodiceBase identifica il caso d'uso generico. Il CodiceSottoCaso (opzionale) identifica i sottocasi.
+
+\begin{longtable}[H]{ll}
+    \caption{Tabella tracciamento dei requisiti funzionali} \\
+    \textbf{Requisito} & \textbf{Descrizione} \\\hline
+    R1F-1 & L’utente deve poter fare il login per accedere al sito \\\hline
+    R1F-1.2 & Il sistema deve fare il display dell’errore di autenticazione \\\hline
+    R1F-2 & L’utente non autenticato deve potersi registrare \\\hline
+    R1F-2.1 & Il sistema deve fare il display dell’errore di registrazione \\\hline
+    R1F-3 & L’utente deve poter visualizzare la dashboard \\\hline
+    R1F-3.1 & L’utente deve poter visualizzare le sfide in cui è coinvolto come sfidato \\\hline
+    R1F-3.1 & L’utente deve poter visualizzare le sfide in cui è coinvolto come sfidante \\\hline
+    R1F-3.1 & L’utente deve poter visualizzare le sfide in cui è coinvolto come valutatore \\\hline
+    R1F-3.2 & L’utente deve poter accettare una sfida che gli viene proposta \\\hline
+    R1F-3.3 & L’utente deve poter cancellare una sfida lanciata \\\hline
+    R1F-3.4 & L’utente deve poter segnare come completata una sfida \\\hline
+    R1F-3.5 & L’utente deve poter arrendersi in una sfida \\\hline
+    R1F-3.6 & L’utente valutatore deve poter valutare con succeso una sfida \\\hline
+    R1F-3.7 & L’utente valutatore deve poter valutare il fallimento di una sfida \\\hline
+    R1F-4 & L’utente deve poter inserire una nuova sfida \\\hline
+    R1F-4.1 & L’utente deve poter selezionare chi sfidare \\\hline
+    R1F-4.2 & L’utente deve poter specificare il titolo della sfida \\\hline
+    R1F-4.3 & L’utente deve poter specificare il dettaglio della sfida \\\hline
+    R1F-4.4 & L’utente deve poter inserire il termine per completare la sfida \\\hline
+    R1F-5 & L’utente deve poter visualizzare lo storico delle sfide \\\hline
+    R1F-6 & L’utente deve poter visualizzare il dettaglio di una sfida \\\hline
+    R1F-6.1 & L’utente deve poter visualizzare il dettaglio cronologico della sfida \\\hline
+    R1F-7 & L'utente deve poter decidere quali notifiche ricevere \\\hline
+\end{longtable}
+
+\begin{longtable}[H]{ll}
+    \caption{Tabella del tracciamento dei requisiti di vincolo} \\
+    \textbf{Requisito} & \textbf{Descrizione} \\\hline
+    R1V-1 & Il backend deve essere realizzato tramite il framework Spring \\\hline
+    R1V-2 & Il frontend deve essere realizzato tramite il framework Angular \\\hline
+    R1V-3 & Il backend deve adottare un’architettura a microservizi \\\hline
+    R1V-3 & La persistenza dei dati deve essere garantita con un database PostgreSQL \\\hline
+    R1V-4 & La GUI deve essere realizzata mediante l’utilizzo della libreria \textit{Bootstrap} \\\hline
+\end{longtable}
+
+%%%%%%%%%%  PROBLEMATICHE   %%%%%%%%%%
+\subsection{Problematiche riscontrate}
+Dall'analisi preventiva dei rischi sono state individuate alcune possibili problematiche a cui si potrà andare incontro:
+\begin{enumerate}
+    \item \textbf{Conoscenza delle tecnologie}
+    \begin{itemize}
+        \item \textbf{Descrizione:} possibile rallentamento nell'attività di sviluppo a causa dell'utilizzo delle nuove tecnologie acquisite nella fasi di studio individuale \ref{teoria}
+        \item \textbf{Soluzione:} autoverifica periodica delle conoscenze acquisite, testandole con piccoli progetti
+    \end{itemize}
+    \item \textbf{Inclusione di nuovi requisiti}
+    \begin{itemize}
+        \item \textbf{Descrizione:} l'utilizzo di un metodo di sviluppo \textit{agile} potrebbe complicare l'aggiunta di nuovi requisiti da soddisfare in corso d'opera
+        \item \textbf{Soluzione:} coinvolgere il committente, in questo caso il tutor, in una ciclica analisi dei requisiti, così da intervenire solamente per piccoli aggiustamenti
+    \end{itemize}
+\end{enumerate}
+
+%%%%%%%%%%  PROGETTAZIONE   %%%%%%%%%%
+\section{Progettazione}
+
+L'architettura della componente \textit{backend} del progetto \textit{Challenginator} è realizzata con i microservizi, ovvero servizi di piccole dimensioni che per poter comunicare tra loro utilizzano API ben definite.
+La comunicazione con il lato \textit{frontend} avviene utilizzando chiamate all'API Gateway, microservizio che si interpone tra \textit{frontend} e \textit{backend}.
+La comunicazione tra microservizi avviene mediante il broker \gls{rabbitmq}.\\
+Il progetto è composto dai seguenti microservizi:
+\begin{itemize}
+    \item api-gateway
+    \item challenge-service
+    \item eurekaserver
+    \item logger-service
+    \item notification-service
+    \item scheduler-service
+    \item user-service
+\end{itemize}
+Il database che permette il salvataggio permanente dei dati è composto dalle seguenti tabelle:\\
+Tabella \texttt{app\_user} per salvare i dati riguardanti gli utenti. Le password prima di esser salvate saranno crittografate.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{4cm}|}
+    \hline
+    \textbf{app\_user}\\\hline
+    \underline{id}\\
+    app\_user\_role\\
+    boss\_id\\
+    email\\
+    enabled\\
+    locked\\
+    name\\
+    password\\
+    score\\
+    surname\\\hline
+    \end{tabular}
+    \caption{Tabella \texttt{app\_user} del database \texttt{challenginator}}
+\end{table}
+
+Tabella \texttt{log} per salvare i log dei vari microservizi.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{4cm}|}
+    \hline
+    \textbf{log}\\\hline
+    \underline{id}\\
+    level\\
+    log\_message\\
+    service\_name\\
+    time\\\hline
+    \end{tabular}
+    \caption{Tabella \texttt{log} del database \texttt{challenginator}}
+\end{table}
+
+Tabella \texttt{challenge} per salvare i dettagli delle singole sfide.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{4cm}|}
+    \hline
+    \textbf{challenge}\\\hline
+    \underline{id}\\
+    challenged\\
+    challenger\\
+    deadline\\
+    description\\
+    evaluator\\
+    result\\
+    status\\
+    timestamp\_acceptance\\
+    timestamp\_creation\\
+    title\\\hline
+    \end{tabular}
+    \caption{Tabella \texttt{challenge} del database \texttt{challenginator}}
+\end{table}
+
+Tabella \texttt{user\_preference} per salvare le preferenze di notifica di ogni utente. I campi di questa tabella (escluso \texttt{id}) sono di tipo \texttt{boolean}.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{4cm}|}
+    \hline
+    \textbf{user\_preference}\\\hline
+    \underline{userid}\\
+    challenge\_accepted\\
+    challenge\_completed\\
+    challenge\_created\\
+    challenge\_deleted\\
+    challenge\_giveup\\
+    challenge\_refused\\
+    challenge\_terminated\\
+    challenge\_updated\\\hline
+    \end{tabular}
+    \caption{Tabella \texttt{user\_preference} del database \texttt{challenginator}}
+\end{table}

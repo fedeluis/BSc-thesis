@@ -1,0 +1,19 @@
+%definisco il layout della pagina
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist 
+
+%Genero l'ambiente per il sommario
+\newcommand\summaryname{Sommario}
+\newenvironment{Sommario}%
+    {\begin{center}%
+    \bfseries{\summaryname} \end{center}}
+    
+\begin{Sommario}
+\begin{changemargin}{1cm}{1cm}
+Il presente documento descrive il mio lavoro svolto durante il periodo di tirocinio, della durata di circa duecentocinquanta ore, presso l'azienda Sync Lab.\\
+Il lavoro di tirocinio si inserisce in un progetto, denominato Challenginator, che consiste nello sviluppo di un'applicazione web per la gestione di sfide tra colleghi.\\
+Gli obiettivi di questo tirocinio erano molteplici. In primo luogo era richiesto lo studio teorico delle applicazioni a microservizi, del 
+framework Spring e del broker RabbitMQ. In secondo luogo era richiesta l'implementazione del servizio di notifica tramite e-mail di Challenginator.
+Infine era richiesto un meccanismo di log per l'applicazione web, così da facilitare il debugging in caso di future modifiche a quest'ultima.
+\end{changemargin}
+\end{Sommario}

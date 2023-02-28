@@ -1,0 +1,100 @@
+\chapter{Progetto personale}
+
+Dopo una prima fase puramente teorica il tirocinio è proseguito con un progetto personale per poter testare le conoscenze apprese. Quest'ultimo doveva includere il \textit{framework} Spring, il \textit{broker} RabbitMQ e permettere il salvataggio persistente dei dati su database PostgreSQL. Il progetto \cite{projtutorial} scelto aveva il compito di gestire le ordinazioni provenienti da più ristoranti. La struttura che lo compone è riportata di seguito:
+\begin{flushleft}
+\dirtree{%
+.1 springbootrabbitmqexample.
+.2 config.
+.3 MessagingConfig.java.
+.2 consumer.
+.3 User.java.
+.2 dto.
+.3 Order.java.
+.3 OrderRepository.java.
+.3 OrderStatus.java.
+.2 publisher.
+.3 OrderPublisher.java.
+.3 OrdersID.java.
+.2 SpringbootRabbitmqExampleApplication.java.
+} 
+\end{flushleft}
+
+\section{Gestione salvataggio ordini}
+Per poter permettere il salvataggio persistente degli ordini ho utilizzato il \acrshort{dbms} PostgreSQL. Il database è composto da una singola tabella \texttt{orders} e gli ordini sono distinti univocamente dalla coppia (\texttt{orderId},\texttt{restaurant}).
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|p{3cm}|}
+        \hline
+        \textbf{orders}\\
+        \hline
+        \underline{orderId}\\
+        \underline{restaurant}\\
+        name\\
+        qty\\
+        price\\
+        \hline
+    \end{tabular}
+    \caption{Tabella \texttt{orders}}
+    \label{tab:orders}
+\end{table}
+La tabella \ref{tab:orders} viene generata dal codice contenuto nel file \texttt{Order}.
+\begin{lstlisting}[language=Java, caption=Frammento codice tabella \texttt{orders}, basicstyle=\footnotesize]
+@Entity
+@Table(name = "orders")
+@IdClass(OrdersID.class)
+public class Order {
+    @Id
+    private String orderId;
+    @Id
+    private String restaurant;
+    private String name;
+    private int qty;
+    private double price;
+}
+\end{lstlisting}
+Nell'ordine, le annotazioni utilizzate servono per
+\begin{enumerate}
+    \item Indicare questa classe come modello per la generazione della tabella
+    \item Specificare il nome della tabella
+    \item Utilizzare una \textit{primary key} composta, creando anche una classe che racchiuda gli oggetti che compongono la \textit{primary key} stessa
+\end{enumerate}
+\begin{lstlisting}[language=Java, caption=Classe per utilizzare \textit{primary key} composta, basicstyle=\footnotesize]
+public class OrdersID implements Serializable {
+    private String orderId;
+    private String restaurant;
+}
+\end{lstlisting}
+
+\section{Gestione di invio e ricezione degli ordini}
+
+Per poter permettere lo scambio di informazioni nell'applicazione ho configurato il broker di messaggi \textit{RabbitMQ} \ref{rabbitmq} nella classe \texttt{MessagingConfig} specificando i nomi di \textit{queue} ed \textit{exchange}.\\ L'invio degli ordini avviene mediante chiamate REST utilizzando Postman per l'invio della \textit{request} e la visualizzazione della \textit{response}. Una volta inviato l'ordine \texttt{OrderPublisher} ha il compito di ricevere queste chiamate ed estrarre le informazioni utili: nel body (in formato JSON) della chiamata vi è l'ordine mentre nel \textit{path} di quest'ultima vi è il nome del ristorante.
+Esempio di chiamata REST:\\
+\texttt{http://localhost:9292/order/lanterna}
+\begin{lstlisting}[caption=Esempio contenuto del body,basicstyle=\footnotesize]
+{
+    "orderId": 1,
+    "name": "spaghetti",
+    "qty": 4,
+    "price": 50
+}
+\end{lstlisting}
+Dopo aver elaborato i dati ricevuti la classe \texttt{OrderPublisher} li invia al broker utilizzando l'oggetto \texttt{template} e successivamente li salva in modo persistente richiamando il metodo \texttt{save} dell'oggetto \texttt{orderRepo}:
+\begin{lstlisting}[language=Java, caption=Frammento del codice della classe \texttt{OrderPublisher} e relativo metodo \texttt{bookOrder}, basicstyle=\footnotesize]
+@Autowired
+private RabbitTemplate template;
+@Autowired
+private OrderRepository orderRepo;
+...
+template.convertAndSend(MessagingConfig.EXCHANGE,
+    MessagingConfig.ROUTING_KEY, orderStatus);
+orderRepo.save(order);
+...
+\end{lstlisting}
+Per finire nel progetto è stato inserito anche una classe \texttt{User} il cui compito è quello di ricevere i messaggi dal broker, leggerli e stampare a schermo i dettagli dell'ordinazione appena effettuata.
+\begin{lstlisting}[language=Java, caption=Frammento del codice della classe \texttt{User}, basicstyle=\footnotesize]
+@RabbitListener(queues = MessagingConfig.QUEUE)
+public void consumeMessageFromQueue(OrderStatus orderStatus) {
+    System.out.println("Message recieved: " + orderStatus +
+    "\nOrder details: " + orderStatus.getOrder().toString());
+}
+\end{lstlisting}

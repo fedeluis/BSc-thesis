@@ -1,0 +1,20 @@
+\chapter{Introduzione}\label{introduzione}
+
+\section{L'azienda}\label{azienda}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics{images/logo-synclab.pdf}
+    \caption{Logo azienda Sync Lab. Fonte: SyncLab}
+\end{figure}
+
+Sync Lab \cite{synclab} nasce come \textit{software house} a Napoli nel 2002. Rapidamente cresciuta nel mercato dell' \acrshort{ict} ora è un \textit{system integrator} che conta 6 sedi in Italia e più di 300 dipendenti. 
+\\
+L'azienda propone innovativi prodotti software che spaziano in diversi settori: \acrshort{gdpr}, Big Data, Cloud Computing, \acrshort{iot}, Mobile e Cyber Security. Grazie alla vasta gamma di soluzioni offerte Sync Lab lavora in diversi mercati, quali Sanità, Industria, Energia, Finanza e Trasporti \& Logistica.
+
+\section{Challenginator}\label{intro_challenginator}
+
+Challenginator \ref{challenginator} è un progetto interno all'azienda ideato per permettere ai propri dipendenti di sfidarsi l'un l'altro in attività inerenti alla vita lavorativa. L'intento è quello di contribuire alla crescita personale del singolo, cercando di migliorare le dinamiche lavorative.\\
+L'idea di base è semplice: un collega ne sfida un altro in un'attività (ad esempio timbrare in orario, ordinare quotidianamente la scrivania etc.) e un superiore supervisionerà l'operato, giudicando lo sfidato.\\
+Per l'implementazione è stato utilizzato il linguaggio \Gls{spring} \ref{spring} data la sua leggerezza e modularità; grazie a quest'ultima è stato possibile selezionare solo le componenti necessarie per il progetto. Tra queste troviamo \textit{Data JPA} per la comunicazione con il database, \textit{Data REST} per lo scambio di dati mediante chiamate \acrshort{rest} e \textit{Cloud} per aggiungere un servizio atto all'individuazione delle componenti (microservizi) dell'applicazione.\\ Il \Gls{dbms} scelto per salvare in modo persistente i dati è \Gls{postgresql}, dato che si è lavorato con database relazionali.\\ L'invio delle email ed il servizio di log sono affidati al broker \Gls{rabbitmq}, preferito a Kafka per i motivi descritti nella Sezione \ref{rabbitmq}.\\ Per la scrittura, la manutenzione ed il testing del progetto è stato utilizzato dell'altro software, descritto nello specifico nella Sezione \ref{software}.\\
+Il mio contributo a questo progetto è costituito dall'implementazione, assieme ad un collega, del servizio di notifica e l'implementazione, autonoma, del servizio di logging.
